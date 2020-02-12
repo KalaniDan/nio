@@ -5,7 +5,6 @@ Flappy Bird Game
 Author: Kalani Daniel
 Date: 12/2/2019
 */
-/* @pjs preload="/img/bg.png","/img/drone.png","/img/bottom.png","/img/top.png","/img/start.png"; */
 
 PImage bg, drone, bottom, top, start;
 int bgx,bgy, dx, dy,g, Vdy;
