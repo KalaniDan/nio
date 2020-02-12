@@ -24,7 +24,127 @@
         </div>
         <div>
             <script type="text/processing">
-                d
+                /*
+
+                        Flappy Bird Game
+
+                        Author: Kalani Daniel
+                        Date: 12/2/2019
+                        */
+
+                        PImage bg, drone, bottom, top, start;
+                        int bgx,bgy, dx, dy,g, Vdy;
+                        int[] pipeX, pipeY;
+                        int gameState, score;
+
+                        void setup(){
+                          size(800,456);
+                          bg=loadImage("./img/bg.png");
+                          drone=loadImage("./img/drone.png");
+                          bottom=loadImage("./img/bottom.png");
+                          top=loadImage("./img/top.png");
+                          start=loadImage("./img/start.png");
+                          dx=100;
+                          dy=50;
+                          g=1;
+                          pipeX= new int[4];
+                          pipeY= new int[pipeX.length];
+                          //Populate Array
+                          for(int i=0;i<pipeX.length;i++){
+                            pipeX[i] = width +200*i;
+                            pipeY[i] = (int)random(-150,10);
+                          }
+                          gameState=-1;
+                        }
+
+                        void draw(){
+                          if(gameState==-1){
+                            startScreen();
+                          }
+                           else if(gameState==0){
+                            setBg();
+                            setPipes();
+                            drone();
+                            score();
+                           }
+                           else{
+                             text("You Lose",20,100);
+                             text("Press Spacebar to restart", 20,250);
+                             restart();
+                           }
+                        }
+
+                        void drone(){
+                          image(drone, dx, dy);
+                          dy=dy+Vdy;
+                          Vdy=Vdy+g;
+                          if(dy> height || dy<0){
+                            text("The Flying Saucer flew away!", 20, 34);
+                            gameState=1;
+                          }
+                        }
+
+                        void mousePressed(){
+                          Vdy = -10;
+                        }
+
+                        void setBg(){
+                           image(bg,bgx,bgy);
+                          image(bg,bgx+bg.width, bgy);
+                          bgx=bgx-1;
+                          if(bgx<-bg.width){
+                            bgx=0;
+                          }
+                        }
+                        void startScreen(){
+                          image(start, 0, 0);
+                          if(mousePressed){
+                            dy=height/2;
+                            gameState=0;
+                          }
+
+                        }
+                        void setPipes(){
+                            for(int i=0;i<pipeX.length;i++){
+                             image(top, pipeX[i], pipeY[i]);
+                             image(bottom,pipeX[i], pipeY[i] + 425);
+                             pipeX[i]-=4;
+                             if(pipeX[i]<-200){
+                                pipeX[i]=width;
+                             }
+                             if(dx>(pipeX[i]-60) && dx< pipeX[i]+83){
+                               if(!(dy>pipeY[i]+ 300  && dy<pipeY[i]+(225+231-70))){
+                               gameState=1;
+                               }
+                              else if(dx==pipeX[i]||dx==pipeX[i]+1){
+                                score++;
+                              }
+                            }
+                          }
+                        }
+
+
+                        void score(){
+                          fill(255);
+                          textSize(32);
+                          text("Score:"+score, width-170,40);
+                        }
+
+                        void restart(){
+                          if(keyPressed){
+                            gameState=-1;  
+                            dx=100;
+                            dy=50;
+                            g=1;
+                            score=0;
+                            pipeX= new int[4];
+                            pipeY= new int[pipeX.length];
+                            for(int i=0;i<pipeX.length;i++){
+                              pipeX[i] = width +200*i;
+                              pipeY[i] = (int)random(-150,10);
+                            }
+                          }
+                        }
             </script>
         </div>
     </body>
